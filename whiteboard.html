@@ -1,0 +1,89 @@
+<!DOCTYPE >
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>White-board™</title>
+    <link rel="icon" href="titlelogo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <style type="text/css">
+        canvas{
+            border: 1px solid black;
+        }
+    </style>
+</head>   
+<body>
+        <input type="text" id="note_text" />
+
+       
+
+    <canvas id = "cnv" width="1000" height="750">
+    <script type = "text/javascript" >
+
+        var md = false;
+        var canvas = document.getElementById('cnv');
+    
+        canvas.addEventListener('mousedown', down);
+        canvas.addEventListener('mouseup', toggledraw);
+        canvas.addEventListener('mousemove',
+
+        function(evt){
+            var mousePos = getMousePos(canvas, evt);
+            var posx = mousePos.x;
+            var posy = mousePos.y;
+            draw(canvas, posx, posy);
+        });
+
+        function down(){
+            md = true;
+
+        }
+        function toggledraw(){
+            md = false;
+            canvas.style.cursor = "default";    
+        }
+        function getMousePos(canvas, evt){
+            var rect = canvas.getBoundingClientRect();
+            return{
+                x:evt.clientX - rect.left,
+                y:evt.clientY - rect.top     
+            };
+        }
+        function draw(canvas, posx, posy){
+            var context = canvas.getContext('2d');
+            if(md){
+                canvas.style.cursor = "pointer";
+                context.fillStyle= document.getElementById("colorPicker").value;
+                context.fillRect(posx, posy, document.getElementById("note_text").value, document.getElementById("note_text").value);
+            }
+        }
+                window.onload=function(){
+                    var el = document.getElementById("button1");
+                    el.addEventListener("click", setColor);
+                }
+                    function setColor() {
+                    alert(document.getElementById("colorPicker").value);
+                }
+
+    </script>
+    </canvas>
+    <input type="color" name="colorPicker" id="colorPicker">
+    <button onclick = "window.location.reload()">reset</button>
+    <button onclick="download_image()">
+            Download
+        </button>   
+    <script>
+    
+            function download_image(){
+            var canvas = document.getElementById("cnv");
+            image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+            var link = document.createElement('a');
+            link.download = "my-image.png";
+            link.href = image;
+            link.click();
+            }
+    </script>
+</body>
+</html>
